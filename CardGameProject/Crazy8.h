@@ -89,7 +89,6 @@ void CrazyEight::drawScreen(){
 
 void CrazyEight::dealCards(){
 	cout << "Dealing Cards" << endl;
-	cardNode temp;
 	for (int p = 0; p < numPlayers; p++)		{
 		for (int i = 0; i < players[p].getHandSize(); i++){
 			
