@@ -16,7 +16,7 @@
 //TODO
 //shufle discard back in
 //if fist discard is 8 shuffle back in
-
+// AI
 class CrazyEight{
 public:
 	CrazyEight(int numPlayers, bool multyDraw = true);
@@ -84,7 +84,7 @@ void CrazyEight::play(){
 
 		if (!valid)	{
 			cout << chosenCard.face << chosenCard.suit << endl;
-			cout << "Not Valid!" << endl<< "select different card";
+			cout << "Not Valid!" << endl<< "Select a different card"<<endl;
 		}
 		valid = true;
 		cin >> playerIn;
@@ -96,7 +96,7 @@ void CrazyEight::play(){
 
 			if (chosenCard.face == '8'){
 				cout << "Its an 8, choose new suit" << endl;
-				cout << "1)" << HEARTS << " 2)" << DIOMONDS << " 3)" << CLUBS << " 4)" << SPADES << endl;
+				cout << "1)" << char(HEARTS) << " 2)" << char(DIOMONDS) << " 3)" << char(CLUBS) << " 4)" << char(SPADES) << endl;
 				playerIn = 0;
 
 				players[currentPlayer].removeCard(chosenCard);
@@ -131,15 +131,17 @@ void CrazyEight::play(){
 		}
 
 	endOfTurn:
-		if (players[currentPlayer].getHandSize()==0)	{
-			endOfGame = true;
+		if (players[currentPlayer].getCardCount()==0)	{
+			endOfGame = true;		
 		}
-		currentPlayer++;
-		//cin >> playerIn;
+		if (valid)	{
+			currentPlayer++;
+		}
+
 
 	}
 
-	cout << "Congrats " << currentPlayer << " You Won!";
+	cout << "Congrats player " << currentPlayer << " You Won!";
 
 	delete [] PlayersCards;
 }
@@ -206,7 +208,7 @@ CrazyEight::CrazyEight(int numPlayers, bool multyDraw){
 		cout << "Sorry you cant play by yourself at the moment" << endl;
 	} else if (this->numPlayers == 2){
 		numDecks = 1;
-		handSize = 7;
+		handSize = 1;
 	} else if (this->numPlayers < 20){
 		numDecks = 2;
 		handSize = 5;

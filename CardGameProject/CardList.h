@@ -99,7 +99,7 @@ bool CardList::removeItem(cardNode c){
 
 		if (cur->face == c.face && cur->suit == c.suit){
 
-			cout << "Removing " << cur->face << cur->suit << endl;
+		//	cout << "Removing " << cur->face << cur->suit << endl;
 			if (prev == NULL){
 
 				head = cur->next;

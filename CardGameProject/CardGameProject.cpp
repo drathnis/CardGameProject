@@ -15,7 +15,7 @@ int main(){
 
 
 	int game = 1;
-	int playerCount = 3;
+	int playerCount = 2;
 	cout << "What Game?";
 	//cin >> game;
 
@@ -23,7 +23,7 @@ int main(){
 		//Julian's Game Crazy Eights
 		//cout << "players?" << endl;
 		//cin >> playerCount;
-		CrazyEight c8(playerCount);
+		CrazyEight c8(playerCount, false);
 
 	} else	if (game == 2){
 		//Josh's game
