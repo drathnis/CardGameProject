@@ -1,3 +1,12 @@
+/***********************************************************
+*CardGameProject.h
+*By: Julian Stanton, Ryan, and Josh
+*
+*
+*Program Description:
+*	A driver program to play card games
+*************************************************************/
+
 #include "Crazy8.h"
 #include <iostream>
 
@@ -6,7 +15,7 @@ int main(){
 
 
 	int game = 1;
-	int playerCount = 2;
+	int playerCount = 3;
 	cout << "What Game?";
 	//cin >> game;
 

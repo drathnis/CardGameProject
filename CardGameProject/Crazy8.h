@@ -13,6 +13,9 @@
 #include "deckOfCards.h"
 #include "player.h"
 
+//TODO
+//shufle discard back in
+//if fist discard is 8 shuffle back in
 
 class CrazyEight{
 public:
@@ -66,7 +69,7 @@ void CrazyEight::play(){
 		
 
 		discardPile.getHand(discardTop, 1);
-		cout << "Player " << currentPlayer << "'s turn. What Card to play? (1 through " << players[currentPlayer].getCardCount() << ") or "
+		cout << "Player " << currentPlayer+1 << "'s turn. What Card to play? (1 through " << players[currentPlayer].getCardCount() << ") or "
 			<< players[currentPlayer].getCardCount() + 1 << " to draw new card" << endl;
 
 		players[currentPlayer].showAllCards();
@@ -93,7 +96,7 @@ void CrazyEight::play(){
 
 			if (chosenCard.face == '8'){
 				cout << "Its an 8, choose new suit" << endl;
-				cout << "1)" << harts << " 2)" << diomonds << " 3)" << clubs << " 4)" << spades << endl;
+				cout << "1)" << HEARTS << " 2)" << DIOMONDS << " 3)" << CLUBS << " 4)" << SPADES << endl;
 				playerIn = 0;
 
 				players[currentPlayer].removeCard(chosenCard);

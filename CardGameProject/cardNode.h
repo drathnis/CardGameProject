@@ -1,4 +1,18 @@
+/***********************************************************
+*cardNode.h
+*By: Julian Stanton
+*
+*
+*Program Description:
+*	Card related structs
+*************************************************************/
+
 #pragma once
+
+
+typedef enum Suits{
+	HEARTS = 3, DIOMONDS, CLUBS, SPADES
+}Suit;
 
 struct cardNode{
 	char suit;

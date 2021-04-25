@@ -16,9 +16,7 @@
 #include <iostream>
 using namespace std;
 
-typedef enum Suits{
-	HARTS = 3,  DIOMONDS = 4, CLUBS = 5,  SPADES = 6
-}Suit;
+
 
 class CardList {
 
