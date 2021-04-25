@@ -17,7 +17,7 @@
 //shufle discard back in
 //if fist discard is 8 shuffle back in
 // AI
-
+//test multi draw
 using namespace std;
 
 class CrazyEight{
@@ -41,7 +41,154 @@ private:
 	int crazySuit;
 	bool multyDraw;
 
+	bool AIgo(cardNode* playersCards, cardNode discardTop);
+
+	void sim();
+
 };
+
+void CrazyEight::sim(){
+
+
+	bool endOfGame = false;
+	int playerIn;
+	int curPlayersTurn = 0;
+	dealCards();
+	discardPile.addCard(drawCard());
+
+	cardNode* playersCards = new cardNode[numCards];
+	cardNode chosenCard;
+	cardNode discardTop[1];
+
+	char crazySuit = 0;
+
+	//3 → ♥//4 → ♦//5 → ♣//6 → ♠
+
+	bool endTurn = false;
+	bool valid = true;
+
+	while (!endOfGame){
+
+		if (currentPlayer >= numPlayers){
+			currentPlayer = 0;
+		}
+
+		//	system("cls");
+
+		players[currentPlayer].getHand(playersCards, players[currentPlayer].getCardCount());
+
+
+		discardPile.getHand(discardTop, 1);
+		cout << "Player " << currentPlayer + 1 << "'s turn. What Card to play? (1 through " << players[currentPlayer].getCardCount() << ") or "
+			<< players[currentPlayer].getCardCount() + 1 << " to draw new card" << endl;
+
+		players[currentPlayer].showAllCards();
+
+		cout << "Discard Pile: ";
+		if (crazySuit){
+			discardTop[0].suit = crazySuit;
+		}
+		cout << discardTop[0].face << discardTop[0].suit;
+		cout << endl;
+
+		if (AIgo(playersCards, discardTop[0])){
+			endTurn = true;
+		}
+
+		if (endTurn){
+			if (players[currentPlayer].getCardCount() == 0){
+				endOfGame = true;
+			}
+			if (valid){
+				currentPlayer++;
+			}
+			endTurn = false;
+		}
+
+	}
+
+	cout << "Congrats player " << currentPlayer << " You Won!";
+
+	delete[] playersCards;
+
+}
+
+bool CrazyEight::AIgo(cardNode* playersCards, cardNode discardTop){
+
+	cardNode* validCards;
+	cardNode chosenCard;
+	validCards = new cardNode[players[currentPlayer].getCardCount()];
+	int cardIndex;
+	int crazyEightIndex;
+	int suitCount[4];
+	int bestSuit;
+	int bestSuitIndex;
+
+	cardIndex = 0;
+	crazyEightIndex = -1;
+
+
+	for (int i = 0; i < 4; i++){
+		suitCount[i] = 0;
+	}
+
+	for (int i = 0; i < players[currentPlayer].getCardCount(); i++){
+
+		if (validMove(playersCards[i], discardTop)){
+			if (playersCards[i].face != '8'){
+				validCards[cardIndex++] = playersCards[i];
+				chosenCard = playersCards[i]; //just set it to a valid card.. who needs strategy? 
+			} else{
+				crazyEightIndex = i;
+				cout << "Found an 8" << endl;
+			}
+			cout << "Valid: " << playersCards[i].face << playersCards[i].suit << endl;
+
+		}
+		suitCount[playersCards[i].suit - 3]++;
+	}
+
+	if (cardIndex){
+		cout << "Playing: " << chosenCard.face << chosenCard.suit << endl;
+
+		players[currentPlayer].removeCard(chosenCard);
+		discardPile.addCard(chosenCard);
+		crazySuit = 0;
+		return true;
+
+	} else if (crazyEightIndex >= 0){
+		cout << "Only 8" << endl;
+		bestSuit = 0;
+		bestSuitIndex = 0;
+		for (int i = 0; i < 4; i++){
+			cout << suitCount[i] << ":" << char(i + 3) << endl;
+			if (suitCount[i] > bestSuit){
+				bestSuit = suitCount[i];
+				bestSuitIndex = i;
+			}
+		}
+		cout << "best Suit =" << bestSuitIndex << endl;
+
+		players[currentPlayer].removeCard(chosenCard);
+		discardPile.addCard(chosenCard);
+		crazySuit = bestSuitIndex + 2;
+
+	} else{
+		cout << "No valid move?" << endl;
+		cout << "Drawing card" << endl;
+		players[currentPlayer].addCard(drawCard());
+		if (multyDraw){
+			return false;
+		}
+	}
+
+
+	delete[] validCards;
+
+	return true;
+
+
+}
 
 void CrazyEight::playAI(){
 
@@ -52,16 +199,11 @@ void CrazyEight::playAI(){
 	discardPile.addCard(drawCard());
 
 	cardNode* playersCards = new cardNode[numCards];
-	cardNode* validCards;
 	cardNode chosenCard;
 	cardNode discardTop[1];
 
 	char crazySuit = 0;
-	int cardIndex;
-	int crazyEightIndex;
-	int suitCount[4];
-	int bestSuit;
-	int bestSuitIndex;
+
 	//3 → ♥//4 → ♦//5 → ♣//6 → ♠
 
 	bool endTurn = false;
@@ -73,9 +215,6 @@ void CrazyEight::playAI(){
 			currentPlayer = 0;
 		}
 
-		for (int i = 0; i < 4; i++)		{
-			suitCount[i] = 0;
-		}
 	//	system("cls");
 
 		players[currentPlayer].getHand(playersCards, players[currentPlayer].getCardCount());
@@ -148,64 +287,9 @@ void CrazyEight::playAI(){
 		} else	{
 			
 			//AI
-			validCards = new cardNode[players[currentPlayer].getCardCount()];
-			cardIndex = 0;
-			crazyEightIndex = -1;
-			for (int i = 0; i < players[currentPlayer].getCardCount(); i++)		{
-
-				if (validMove(playersCards[i], discardTop[0])){
-					if (playersCards[i].face != '8')	{
-						validCards[cardIndex++] = playersCards[i];
-						chosenCard = playersCards[i]; //just set it to a valid card.. who needs strategy? 
-					} else	{
-						crazyEightIndex = i;
-						cout << "Found an 8" << endl;
-					}
-					cout<<"Valid: " << playersCards[i].face << playersCards[i].suit << endl;
-
-				}
-				suitCount[playersCards[i].suit - 3]++;
-			}
-						
-			if (cardIndex){
-				cout << "Playing: " << chosenCard.face << chosenCard.suit << endl;
-
-				players[currentPlayer].removeCard(chosenCard);
-				discardPile.addCard(chosenCard);
-				crazySuit = 0;
-				endTurn = true;
-
-			}else if (crazyEightIndex>=0){
-				cout << "Only 8" << endl;
-				bestSuit = 0;
-				bestSuitIndex = 0;
-				for (int i = 0; i < 4; i++){
-					cout << suitCount[i] << ":" << char(i + 3) << endl;
-					if (suitCount[i]>bestSuit)	{
-						bestSuit = suitCount[i];
-						bestSuitIndex = i;
-					}	
-				}
-				cout << "best Suit =" << bestSuitIndex << endl;
-
-				players[currentPlayer].removeCard(chosenCard);
-				discardPile.addCard(chosenCard);
-				crazySuit = bestSuitIndex+2;
-
-			} else{
-				cout << "No valid move?" << endl;
-				cout << "Drawing card" << endl;
-				players[currentPlayer].addCard(drawCard());
-				if (multyDraw){
-					continue;
-				}
+			if (AIgo(playersCards,discardTop[0])){
 				endTurn = true;
 			}
-
-
-			delete [] validCards;
-
-
 
 		}
 
