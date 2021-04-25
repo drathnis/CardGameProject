@@ -64,7 +64,7 @@ void CrazyEight::playAI(){
 	int bestSuitIndex;
 	//3 → ♥//4 → ♦//5 → ♣//6 → ♠
 
-
+	bool endTurn = false;
 	bool valid = true;
 
 	while (!endOfGame){	
@@ -123,20 +123,18 @@ void CrazyEight::playAI(){
 					}
 					playerIn += 2;
 					crazySuit = playerIn;
-					goto endOfTurn;
+					endTurn = true;
 
-				}
-
-				if (validMove(chosenCard, discardTop[0])){
+				} else if (validMove(chosenCard, discardTop[0])){
 					cout << "Valid" << endl;
 					players[currentPlayer].removeCard(chosenCard);
 					discardPile.addCard(chosenCard);
 					crazySuit = 0;
-					goto endOfTurn;
+					endTurn = true;
 
 				} else{
 					valid = false;
-					goto endOfTurn;
+					endTurn = true;
 
 				}
 			} else if (playerIn == players[currentPlayer].getCardCount() + 1){
@@ -144,7 +142,7 @@ void CrazyEight::playAI(){
 				if (multyDraw){
 					continue;
 				}
-				goto endOfTurn;
+				endTurn = true;
 			}
 
 		} else	{
@@ -168,18 +166,16 @@ void CrazyEight::playAI(){
 				}
 				suitCount[playersCards[i].suit - 3]++;
 			}
-			
-//			cout << "V's = " << cardIndex << " and 8's = " << crazyEightIndex << endl;
-			
-			if (cardIndex && crazyEightIndex<0){
+						
+			if (cardIndex){
 				cout << "Playing: " << chosenCard.face << chosenCard.suit << endl;
 
 				players[currentPlayer].removeCard(chosenCard);
 				discardPile.addCard(chosenCard);
 				crazySuit = 0;
-				goto endOfTurn;
+				endTurn = true;
 
-			}else if (!cardIndex && crazyEightIndex>=0){
+			}else if (crazyEightIndex>=0){
 				cout << "Only 8" << endl;
 				bestSuit = 0;
 				bestSuitIndex = 0;
@@ -191,6 +187,11 @@ void CrazyEight::playAI(){
 					}	
 				}
 				cout << "best Suit =" << bestSuitIndex << endl;
+
+				players[currentPlayer].removeCard(chosenCard);
+				discardPile.addCard(chosenCard);
+				crazySuit = bestSuitIndex+2;
+
 			} else{
 				cout << "No valid move?" << endl;
 				cout << "Drawing card" << endl;
@@ -198,7 +199,7 @@ void CrazyEight::playAI(){
 				if (multyDraw){
 					continue;
 				}
-				goto endOfTurn;
+				endTurn = true;
 			}
 
 
@@ -208,18 +209,14 @@ void CrazyEight::playAI(){
 
 		}
 
-
-
-		cin >> playerIn;
-
-
-
-	endOfTurn:
-		if (players[currentPlayer].getCardCount() == 0){
-			endOfGame = true;
-		}
-		if (valid){
-			currentPlayer++;
+		if (endTurn)	{
+			if (players[currentPlayer].getCardCount() == 0){
+				endOfGame = true;
+			}
+			if (valid){
+				currentPlayer++;
+			}
+			endTurn = false;
 		}
 
 	}
