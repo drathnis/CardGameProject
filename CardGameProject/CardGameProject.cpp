@@ -15,7 +15,7 @@ int main(){
 
 
 	int game = 1;
-	int playerCount = 2;
+	int playerCount = 1;
 	cout << "What Game?";
 	//cin >> game;
 
