@@ -39,10 +39,27 @@ public:
 
 	void displayTop();
 
+	bool getCards(cardNode cards[], int amount);
 
 	~CardList();
 
 };
+
+
+bool CardList::getCards(cardNode cards[], int amount){
+
+	cardNode* curr = head;
+
+	if (curr==NULL)	{
+		return false;
+	}
+
+	for (int i = 0; i < amount; i++)		{
+		cards[i] = *curr;
+		curr = curr->next;
+	}
+	return true;
+}
 
 CardList::CardList(){
 	head = NULL;
@@ -149,9 +166,11 @@ int CardList::getQuantity(){
 void CardList::displayAll(){
 
 	cardNode* cur;
+	int count = 1;
+	for (cur = head; cur != NULL; cur = cur->next){
+		cout << count++<<") "<<cur->face << cur->suit << endl;
+	}
 
-	for (cur = head; cur != NULL; cur = cur->next)
-		cout << cur->face << cur->suit << endl;
 
 
 	cout << endl;
