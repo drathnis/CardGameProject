@@ -16,7 +16,7 @@
 
 class CrazyEight{
 public:
-	CrazyEight(int numPlayers);
+	CrazyEight(int numPlayers, bool multyDraw = true);
 	~CrazyEight();
 
 private:
@@ -32,86 +32,113 @@ private:
 	int currentPlayer;
 	int numCards;
 	int crazySuit;
-
+	bool multyDraw;
 
 };
 
 void CrazyEight::play(){
-	cout << "Play" << endl;
-	dealCards();
-	players[0].showAllCards();
-	cout << endl;
-	players[1].showAllCards();
 
 	bool endOfGame = false;
-	int playerIn, suitIn;
+	int playerIn;
 	int curPlayersTurn =0;
-
+	dealCards();
 	discardPile.addCard(drawCard());
 
-	cardNode* cards = new cardNode[numCards];
+	cardNode* PlayersCards = new cardNode[numCards];
 
 	cardNode chosenCard;
+	cardNode discardTop[1];
 
 	char crazySuit = 0;
-	char harts = 3, spades = 6, clubs = 5, diomonds = 4;
+	char harts = 3, diomonds = 4, clubs = 5, spades = 6;
+	
+	//3 → ♥//4 → ♦//5 → ♣//6 → ♠
 
-	//3 → ♥
-	//4 → ♦
-	//5 → ♣
-	//6 → ♠
+	bool valid = true;
 
-	//// 003, 004, 005 & 006 
 	while (!endOfGame){
 
-		drawScreen();
+		if (currentPlayer>=numPlayers)	{
+			currentPlayer = 0;
+		}
+		system("cls");
+		players[currentPlayer].getHand(PlayersCards, players[currentPlayer].getCardCount());
 		
-		players[currentPlayer].getHand(cards, players[currentPlayer].getCardCount());
 
+		discardPile.getHand(discardTop, 1);
+		cout << "Player " << currentPlayer << "'s turn. What Card to play? (1 through " << players[currentPlayer].getCardCount() << ") or "
+			<< players[currentPlayer].getCardCount() + 1 << " to draw new card" << endl;
+
+		players[currentPlayer].showAllCards();
+
+		cout << "Discard Pile: ";
+		if (crazySuit){
+			discardTop[0].suit = crazySuit;
+		}
+		cout << discardTop[0].face << discardTop[0].suit;
+		crazySuit = 0;
+		cout << endl;
+
+		if (!valid)	{
+			cout << chosenCard.face << chosenCard.suit << endl;
+			cout << "Not Valid!" << endl<< "select different card";
+		}
+		valid = true;
 		cin >> playerIn;
 
-		if (playerIn > 0 && playerIn < players[currentPlayer].getCardCount()+1){
-			chosenCard = cards[playerIn-1];
+		if (playerIn > 0 && playerIn < players[currentPlayer].getCardCount() + 1){
+			chosenCard = PlayersCards[playerIn - 1];
 
 			cout << chosenCard.face << chosenCard.suit << endl;
-			discardPile.getHand(cards, discardPile.getCardCount());
 
-			if (chosenCard.face=='8')	{
+			if (chosenCard.face == '8'){
 				cout << "Its an 8, choose new suit" << endl;
-				cout << "1)" << harts << " 2)" << spades << " 3)" << clubs << " 4)" << diomonds << endl;
-				cin >> suitIn;
-				
-				//finish this
+				cout << "1)" << harts << " 2)" << diomonds << " 3)" << clubs << " 4)" << spades << endl;
+				playerIn = 0;
+
+				players[currentPlayer].removeCard(chosenCard);
+				discardPile.addCard(chosenCard);
+
+				while (playerIn <=0 || playerIn > 4)	{
+					cin >> playerIn;
+				}
+				playerIn+=2;
+				crazySuit = playerIn;
+				goto endOfTurn;
 
 			}
 
-			if (validMove(chosenCard, cards[0])){
+			if (validMove(chosenCard, discardTop[0])){
 				cout << "Valid" << endl;
 				players[currentPlayer].removeCard(chosenCard);
 				discardPile.addCard(chosenCard);
-				continue;
+				goto endOfTurn;
 
 			} else{
-				cout << "not Valid!" << endl;
+				valid = false;
+				goto endOfTurn;
+				
 			}
 		} else if (playerIn == players[currentPlayer].getCardCount() + 1){
 			players[currentPlayer].addCard(drawCard());
-			continue;
-		}
-		
-		cin >> playerIn;
-
-		if (players[currentPlayer].getCardCount()==0)	{
-			cout << currentPlayer << " Wins" << endl;
+			if (multyDraw){
+				continue;
+			}
+			goto endOfTurn;
 		}
 
-		if (playerIn ==0 )	{
+	endOfTurn:
+		if (players[currentPlayer].getHandSize()==0)	{
 			endOfGame = true;
 		}
+		currentPlayer++;
+		//cin >> playerIn;
 
 	}
 
-	delete [] cards;
+	cout << "Congrats " << currentPlayer << " You Won!";
+
+	delete [] PlayersCards;
 }
 
 void CrazyEight::drawScreen(){
@@ -163,10 +190,11 @@ void CrazyEight::dealCards(){
 	}
 }
 
-CrazyEight::CrazyEight(int numPlayers){
+CrazyEight::CrazyEight(int numPlayers, bool multyDraw){
 	this->numPlayers = numPlayers;
-
+	this->multyDraw = multyDraw;
 	players = new Player[numPlayers];
+
 
 	int handSize =7;
 	int numDecks =1;
