@@ -58,8 +58,10 @@ void CrazyEight::playAI(){
 
 	char crazySuit = 0;
 	int cardIndex;
-	int crazyEight;
+	int crazyEightIndex;
 	int suitCount[4];
+	int bestSuit;
+	int bestSuitIndex;
 	//3 → ♥//4 → ♦//5 → ♣//6 → ♠
 
 
@@ -74,7 +76,7 @@ void CrazyEight::playAI(){
 		for (int i = 0; i < 4; i++)		{
 			suitCount[i] = 0;
 		}
-		system("cls");
+	//	system("cls");
 
 		players[currentPlayer].getHand(playersCards, players[currentPlayer].getCardCount());
 
@@ -90,7 +92,6 @@ void CrazyEight::playAI(){
 			discardTop[0].suit = crazySuit;
 		}
 		cout << discardTop[0].face << discardTop[0].suit;
-		crazySuit = 0;
 		cout << endl;
 
 
@@ -130,6 +131,7 @@ void CrazyEight::playAI(){
 					cout << "Valid" << endl;
 					players[currentPlayer].removeCard(chosenCard);
 					discardPile.addCard(chosenCard);
+					crazySuit = 0;
 					goto endOfTurn;
 
 				} else{
@@ -150,39 +152,53 @@ void CrazyEight::playAI(){
 			//AI
 			validCards = new cardNode[players[currentPlayer].getCardCount()];
 			cardIndex = 0;
-			crazyEight = 0;
+			crazyEightIndex = -1;
 			for (int i = 0; i < players[currentPlayer].getCardCount(); i++)		{
 
 				if (validMove(playersCards[i], discardTop[0])){
 					if (playersCards[i].face != '8')	{
 						validCards[cardIndex++] = playersCards[i];
+						chosenCard = playersCards[i]; //just set it to a valid card.. who needs strategy? 
 					} else	{
-						crazyEight = i;
-						cout << "FOUND 8" << endl;
+						crazyEightIndex = i;
+						cout << "Found an 8" << endl;
 					}
 					cout<<"Valid: " << playersCards[i].face << playersCards[i].suit << endl;
 
 				}
 				suitCount[playersCards[i].suit - 3]++;
 			}
+			
+//			cout << "V's = " << cardIndex << " and 8's = " << crazyEightIndex << endl;
+			
+			if (cardIndex && crazyEightIndex<0){
+				cout << "Playing: " << chosenCard.face << chosenCard.suit << endl;
 
-			if (cardIndex && !crazyEight){
-				chosenCard = validCards[cardIndex];
-				if (validMove(chosenCard, validCards[cardIndex])){
-					cout << "AI playng " << chosenCard << endl;
-					players[currentPlayer].removeCard(chosenCard);
-					discardPile.addCard(chosenCard);
-				} else{
-					cout << "oops" << endl;
-				}
-				cin >> playerIn;
+				players[currentPlayer].removeCard(chosenCard);
+				discardPile.addCard(chosenCard);
+				crazySuit = 0;
 				goto endOfTurn;
-			}
 
-			if (crazyEight){
+			}else if (!cardIndex && crazyEightIndex>=0){
 				cout << "Only 8" << endl;
+				bestSuit = 0;
+				bestSuitIndex = 0;
+				for (int i = 0; i < 4; i++){
+					cout << suitCount[i] << ":" << char(i + 3) << endl;
+					if (suitCount[i]>bestSuit)	{
+						bestSuit = suitCount[i];
+						bestSuitIndex = i;
+					}	
+				}
+				cout << "best Suit =" << bestSuitIndex << endl;
 			} else{
 				cout << "No valid move?" << endl;
+				cout << "Drawing card" << endl;
+				players[currentPlayer].addCard(drawCard());
+				if (multyDraw){
+					continue;
+				}
+				goto endOfTurn;
 			}
 
 
