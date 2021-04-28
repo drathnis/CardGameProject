@@ -528,43 +528,81 @@ void CrazyEight::mixBackIn(){
 
 bool CrazyEight::goAI(int currPlayer){
 
-	cardNode* validCards;
+	//cardNode* validCards;
 	cardNode* playersCards;
 	cardNode chosenCard;
 	int cardCount = players[currPlayer].getCardCount();
 	int vCardCount = 0;
 	int eightIndex;
-	
-	
-	validCards = new cardNode[cardCount];
+	bool validCard;
+	int suitCount[4] = {0};
+	int bestSuit;
+	int bestSuitIndex;
 	playersCards = new cardNode[cardCount];
-	
+
 	players[currPlayer].getHand(playersCards, cardCount);
 
 
 	eightIndex = -1;
+	validCard = false;
 	for (int i = 0; i < cardCount; i++)	{
 
 		if (validMove(discardTop, playersCards[i]))	{
-			validCards[vCardCount++] = playersCards[i];
 			chosenCard = playersCards[i];
+			validCard = true;
 		} else if(playersCards[i].face == '8') {
 			eightIndex = i;
 		}
+		suitCount[playersCards[i].suit - 3]++;
 
 	}
 
+	if (validCard)	{
+		players[currPlayer].removeCard(chosenCard);
+		c8Discard.addItem(chosenCard);
+		discardTop = chosenCard;
 
-	for (int i = 0; i < vCardCount; i++){
-		cout << validCards[i].face << validCards[i].suit << endl;
-	}
-	if (eightIndex>0)	{
-		cout << playersCards[eightIndex].face << playersCards[eightIndex].suit << endl;
+		return true;
 	}
 
+
+	if (eightIndex>=0)	{
+		bestSuit = -1;
+
+		for (int i = 0; i < 4; i++){
+
+			if (bestSuit < suitCount[i])	{
+				bestSuit = suitCount[i];
+				bestSuitIndex = i;
+			}
+		}
+
+		chosenCard = playersCards[eightIndex];
+
+		discardTop = chosenCard;
+		discardTop.suit = bestSuitIndex + 3;
+
+		players[currPlayer].removeCard(chosenCard);
+		c8Discard.addItem(chosenCard);
+
+		return true;
+	}
+
+
+	if (!validCard && eightIndex < 0){
+		cout << "Draw Card" << endl;
+		if (c8Deck.getQuantity() < 1){
+			mixBackIn();
+		}
+
+		players[currPlayer].addCard(c8Deck.takeTop());
+		return true;
+	} else	{
+		cout << "404" << endl;
+	}
 
 	delete[] playersCards;
-	delete[] validCards;
+
 
 	return false;
 }
@@ -575,7 +613,7 @@ bool CrazyEight::playerTurn(int currPlayer){
 	int playerIn;
 	int cardCount = players[currPlayer].getCardCount();
 	cardNode* playersCards = new cardNode[cardCount];
-	cardNode choosenCard;
+	cardNode chosenCard;
 	bool crazy8 = false;
 
 	players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
@@ -588,15 +626,15 @@ bool CrazyEight::playerTurn(int currPlayer){
 
 	if (playerIn>0&&playerIn <= cardCount){
 		cout << playersCards[playerIn - 1].face<< playersCards[playerIn - 1].suit<<endl;
-		choosenCard = playersCards[playerIn - 1];
+		chosenCard = playersCards[playerIn - 1];
 
-		if (choosenCard.face == '8')	{
+		if (chosenCard.face == '8')	{
 			crazy8 = true;
 			
-		} else if (validMove(choosenCard, discardTop)){
-			players[currPlayer].removeCard(choosenCard);
-			c8Discard.addItem(choosenCard);
-			discardTop = choosenCard;
+		} else if (validMove(chosenCard, discardTop)){
+			players[currPlayer].removeCard(chosenCard);
+			c8Discard.addItem(chosenCard);
+			discardTop = chosenCard;
 			delete[] playersCards;
 			return true;
 
@@ -608,9 +646,7 @@ bool CrazyEight::playerTurn(int currPlayer){
 	} else if (playerIn == cardCount+1)	{
 		cout << "Draw Card" << endl;
 		if (c8Deck.getQuantity()<1){
-
 			mixBackIn();
-
 		}
 
 		players[currPlayer].addCard(c8Deck.takeTop());
@@ -629,9 +665,9 @@ bool CrazyEight::playerTurn(int currPlayer){
 			cin >> playerIn;
 		}
 
-		players[currPlayer].removeCard(choosenCard);
-		c8Discard.addItem(choosenCard);
-		discardTop = choosenCard;
+		players[currPlayer].removeCard(chosenCard);
+		c8Discard.addItem(chosenCard);
+		discardTop = chosenCard;
 		discardTop.suit = playerIn + 2;
 		delete[] playersCards;
 		return true;
