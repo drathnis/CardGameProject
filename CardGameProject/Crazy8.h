@@ -17,6 +17,8 @@
 // Validate input
 //Test test test
 //clean up;
+//remove some couts<<
+
 using namespace std;
 
 class CrazyEight{
