@@ -88,8 +88,7 @@ void Blackjack::playGame()
 	string input;
 	int pVal;
 	const int playerCount = numPlayers;
-	//bool gameOver[playerCount];
-
+	//bool gameOver[playerCount]; //changed by JS delete at bottom
 	bool* gameOver = new bool[numPlayers];
 
 	do
