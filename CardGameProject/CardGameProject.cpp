@@ -17,10 +17,8 @@ int main(){
 	bool playing = true;
 	bool displayMenu = true;
 	int game = 1;
-	int playerCount = 2;
+	int playerCount = 1;
 	int gameType = 1;
-
-
 
 
 	do	{
@@ -44,7 +42,8 @@ int main(){
 				std::cout << "Crazy Eights selected?" << std::endl;
 				//std::cin >> playerCount;
 				CrazyEight c8(playerCount);
-				c8.playGame();
+				c8.simGame();
+				//c8.playGame();
 
 				playing = false;
 			} else if (game == 2)			{

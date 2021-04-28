@@ -14,8 +14,7 @@
 #include "player.h"
 
 //TODO
-// Validate input
-//Test test test
+//Test test
 //clean up;
 //remove some couts<<
 
@@ -25,13 +24,11 @@ class CrazyEight{
 public:
 	CrazyEight(int numPlayers);
 	~CrazyEight();
-	void simGame(){
-		sim();
-	};
 
-	void playGame(){
-		play();
-	}
+	void playGame();
+	void simGame();
+
+
 
 private:
 	deckOfCards* deck;
@@ -45,18 +42,15 @@ private:
 	cardNode discardTop;
 
 	bool validMove(cardNode a, cardNode b);
-
+	void loadDeck();
 	void dealCards();
 	void play();
 	bool playerTurn(int player);
-	
-	void loadDeck();
-
+	bool goAI(int player);
+	void sim();
+	int getValidInput(int min, int max);
 	void mixBackIn();
 
-	bool goAI(int player);
-
-	void sim();
 
 };
 
@@ -129,6 +123,28 @@ void CrazyEight::sim(){
 
 }
 
+int CrazyEight::getValidInput(int min, int max){
+	int input;
+	bool valid;
+
+	do	{
+		cin >> input;
+
+		if (cin.fail() || input<min || input >max){
+			cout << "invalid entry! Try again" << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+			valid = false;
+		} else{
+			valid = true;
+		}
+
+	} while (!valid);
+
+
+	return input;
+}
+
 
 void CrazyEight::play(){
 	
@@ -156,7 +172,7 @@ void CrazyEight::play(){
 
 
 	while (gametime){
-	//	system("cls");
+		system("cls");
 		cout <<"Deck remaining :" << c8Deck.getQuantity() << endl;
 		cout << "Discard:" << c8Discard.getQuantity() << endl;
 		cout << " _______ " <<endl;
@@ -198,7 +214,6 @@ void CrazyEight::play(){
 			}
 
 		}
-
 
 		if (!players[currPlayer].getCardCount()){
 			cout << "Player " << currPlayer + 1 << " wins!" << endl;
@@ -267,7 +282,7 @@ bool CrazyEight::goAI(int currPlayer){
 		players[currPlayer].removeCard(chosenCard);
 		c8Discard.addItem(chosenCard);
 		discardTop = chosenCard;
-
+		cout << "Playing: " << chosenCard.face << chosenCard.suit << endl;
 		return true;
 	}
 
@@ -287,7 +302,7 @@ bool CrazyEight::goAI(int currPlayer){
 
 		discardTop = chosenCard;
 		discardTop.suit = bestSuitIndex + 3;
-
+		cout << "Playing an 8, chaging suit to " << discardTop.suit << endl;
 		players[currPlayer].removeCard(chosenCard);
 		c8Discard.addItem(chosenCard);
 
@@ -321,14 +336,11 @@ bool CrazyEight::playerTurn(int currPlayer){
 
 	players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
 
-	cin >> playerIn;
 
-	if (playerIn == 0)	{
+	playerIn = getValidInput(0, cardCount + 1);
+
+	if (playerIn == 0){
 		return false;
-	}
-
-	while (playerIn <= 0 || playerIn > cardCount+1){
-		cin >> playerIn;
 	}
 
 	if (playerIn>0&&playerIn <= cardCount){
@@ -366,11 +378,9 @@ bool CrazyEight::playerTurn(int currPlayer){
 	if (crazy8)	{
 		cout << "You played an 8, choose new suit!" << endl;
 		cout << "1)" << char(HEARTS) << " 2)" << char(DIOMONDS) << " 3)" << char(CLUBS) << " 4)" << char(SPADES) << endl;
-		playerIn = 0;
 
-		while (playerIn <= 0 || playerIn > 4){
-			cin >> playerIn;
-		}
+
+		playerIn = getValidInput(1, 4);
 
 		players[currPlayer].removeCard(chosenCard);
 		c8Discard.addItem(chosenCard);
@@ -399,8 +409,9 @@ void CrazyEight::loadDeck(){
 		}
 
 	} while (newCardData != "");
+	
+	c8Deck.shuffleCards();
 
-	c8Deck.displayAll();
 }
 
 bool CrazyEight::validMove(cardNode a, cardNode b){
@@ -473,6 +484,14 @@ CrazyEight::~CrazyEight(){
 
 	delete [] players;
 	delete deck;
+}
+
+void CrazyEight::simGame(){
+	sim();
+}
+
+void CrazyEight::playGame(){
+	play();
 }
 
 #endif
