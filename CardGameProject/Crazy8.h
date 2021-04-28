@@ -102,10 +102,7 @@ void CrazyEight::sim(){
 
 		cout << currPlaycardCount + 1 << ") Draw" << endl;
 
-
 		goAI(currPlayer);
-
-
 
 		if (!players[currPlayer].getCardCount()){
 			cout << "Player " << currPlayer + 1 << " wins!" << endl;
@@ -226,7 +223,7 @@ void CrazyEight::play(){
 		}
 
 
-		delete [] playersCards;
+		delete[] playersCards;
 	}
 	cout << "Hope you enjoyed crazy eights!";
 
@@ -447,6 +444,7 @@ CrazyEight::CrazyEight(int numPlayers){
 	int handSize;
 	int numDecks;
 	int numCards;
+	discardTop.face = 'X';
 
 	if (this->numPlayers == 1){
 		numDecks = 1;
@@ -457,7 +455,7 @@ CrazyEight::CrazyEight(int numPlayers){
 		numDecks = 1;
 		handSize = 7;
 		vsPC = false;
-	} else if (this->numPlayers < 20){
+	} else if (this->numPlayers < 9){
 		numDecks = 2;
 		handSize = 5;
 		vsPC = false;
@@ -488,10 +486,15 @@ CrazyEight::~CrazyEight(){
 
 void CrazyEight::simGame(){
 	sim();
+	cout << "Thanks for invoking Crazy Eights!" << endl;
+	system("pause");
+
 }
 
 void CrazyEight::playGame(){
 	play();
+	cout << "Thanks for invoking Crazy Eights!" << endl;
+	system("pause");
 }
 
 #endif

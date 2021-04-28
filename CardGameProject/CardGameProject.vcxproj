@@ -142,6 +142,7 @@
     <ClCompile Include="CardGameProject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Blackjack.h" />
     <ClInclude Include="CardList.h" />
     <ClInclude Include="cardNode.h" />
     <ClInclude Include="Crazy8.h" />
