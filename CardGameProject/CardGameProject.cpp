@@ -16,8 +16,8 @@ int main(){
 
 	bool playing = true;
 	bool displayMenu = true;
-	int game = 0;
-	int playerCount = 2;
+	int game = 1;
+	int playerCount = 1;
 	int gameType = 1;
 	do	{
 		if (displayMenu)		{
@@ -33,22 +33,23 @@ int main(){
 			std::cout << "+-------------------------------+" << std::endl;
 		}
 		std::cout << "Pick a game to play\n>>";
-		std::cin >> game;
+		//std::cin >> game;
 		if (game >= 1 && game <= 5)		{
 			if (game == 1)			{
 				//Julian's Game Crazy Eights
 				std::cout << "Crazy Eights selected?" << std::endl;
-				std::cin >> playerCount;
+				//std::cin >> playerCount;
 				CrazyEight c8(playerCount);
-			} 			else if (game == 2)			{
+				playing = false;
+			} else if (game == 2)			{
 				//Josh's Game
 				std::cout << "Black Jack Selected" << std::endl;
-			} 			else if (game == 3)			{
+			}else if (game == 3)			{
 				War newWar;
-				newWar.warMenu();
-			} 			else if (game == 4)			{
+				//newWar.warMenu();
+			}else if (game == 4)			{
 				//Game Randomizer
-			} 			else			{
+			}else			{
 				std::cout << "Exiting game now. Thank you Good bye!\n";
 				playing = false;
 			}
