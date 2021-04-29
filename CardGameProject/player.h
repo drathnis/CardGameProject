@@ -80,8 +80,6 @@ bool Player::addCard(cardNode card){
 	return false;
 }
 
-
-//not tested yet just guessing
 bool Player::removeCard(cardNode card){
 
 	cardCount--;
@@ -89,7 +87,6 @@ bool Player::removeCard(cardNode card){
 	return 	hand.removeItem(card);
 
 }
-
 
 void Player::showAllCards(){
 
