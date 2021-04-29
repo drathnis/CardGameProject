@@ -83,10 +83,13 @@ void CrazyEight::sim(){
 
 		currPlaycardCount = players[currPlayer].getCardCount();
 		playersCards = new cardNode[currPlaycardCount];
-		players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+		players[currPlayer].getHand(playersCards,
+			players[currPlayer].getCardCount());
 
-		cout << "Player " << currPlayer + 1 << "'s turn. What Card to play? (1 through " << players[currPlayer].getCardCount() << ") or "
-			<< currPlaycardCount + 1 << " to draw new card. 0 to exit" << endl;
+		cout << "Player " << currPlayer + 1 
+			<< "'s turn. What Card to play? (1 through " 
+			<< players[currPlayer].getCardCount() << ") or "
+			<< currPlaycardCount + 1<<" to draw new card. 0 to exit" << endl;
 
 		players[currPlayer].showAllCards();
 
@@ -172,10 +175,13 @@ void CrazyEight::play(){
 		
 		currPlaycardCount = players[currPlayer].getCardCount();
 		playersCards = new cardNode[currPlaycardCount];
-		players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+		players[currPlayer].getHand(playersCards, 
+			players[currPlayer].getCardCount());
 
-		cout << "Player " << currPlayer + 1 << "'s turn. What Card to play? (1 through " << players[currPlayer].getCardCount() << ") or "
-			<< currPlaycardCount + 1 << " to draw new card. 0 to exit" << endl;
+		cout << "Player " << currPlayer + 1 
+			<< "'s turn. What Card to play? (1 through " 
+			<< players[currPlayer].getCardCount() << ") or "
+			<< currPlaycardCount + 1 << " to draw new card. 0 to exit"<<endl;
 
 		players[currPlayer].showAllCards();
 
@@ -363,7 +369,10 @@ bool CrazyEight::playerTurn(int currPlayer){
 
 	if (crazy8)	{
 		cout << "You played an 8, choose new suit!" << endl;
-		cout << "1)" << char(HEARTS) << " 2)" << char(DIOMONDS) << " 3)" << char(CLUBS) << " 4)" << char(SPADES) << endl;
+		cout << "1)" << char(HEARTS) 
+			<< " 2)" << char(DIOMONDS)
+			<< " 3)" << char(CLUBS) 
+			<< " 4)" << char(SPADES) << endl;
 
 
 		playerIn = getValidInput(1, 4);

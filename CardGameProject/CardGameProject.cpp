@@ -42,7 +42,7 @@ int main(){
 			cout << "|                     _______   |" << endl;
 			cout << "|  1.)  Crazy Eights |       |  |" << endl;
 			cout << "|  2.)  Black Jack   | A     |  |" << endl;
-			cout << "|  3.)  War          |   " << char(6) << "   |  |" << endl;
+			cout << "|  3.)  War          |   " << char(6)<<"   |  |"<< endl;
 			cout << "|  4.)  Random Game  |     A |  |" << endl;
 			cout << "|  5.)  Exit Program |_______|  |" << endl;
 			cout << "+-------------------------------+" << endl;
@@ -80,8 +80,8 @@ int main(){
 		case BLACK_JACK:
 			{
 				cout << "Black Jack selected" << endl;
-				cout << "Select how many players will be playing?" << endl;
-				userIn = getValidInput(0, 5);
+				cout << "Select how many players will be playing?" << endl;        
+				userIn = getValidInput(0, 5);                                  
 				Blackjack newGame(userIn);
 				gameSelect = 0;
 			}
