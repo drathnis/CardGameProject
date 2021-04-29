@@ -326,7 +326,8 @@ bool CrazyEight::playerTurn(int currPlayer){
 	cardNode chosenCard;
 	bool crazy8 = false;
 
-	players[currPlayer].getHand(playersCards, players[currPlayer].getCardCount());
+	players[currPlayer].getHand(playersCards, 
+		players[currPlayer].getCardCount());
 
 
 	playerIn = getValidInput(0, cardCount + 1);
@@ -336,7 +337,8 @@ bool CrazyEight::playerTurn(int currPlayer){
 	}
 
 	if (playerIn>0&&playerIn <= cardCount){
-		cout << playersCards[playerIn - 1].face<< playersCards[playerIn - 1].suit<<endl;
+		cout << playersCards[playerIn - 1].face 
+			<< playersCards[playerIn - 1].suit<<endl;
 		chosenCard = playersCards[playerIn - 1];
 
 		if (chosenCard.face == '8')	{
