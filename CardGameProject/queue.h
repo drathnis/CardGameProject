@@ -13,8 +13,6 @@
 #define QUEUE_H
 #include <iomanip>
 #include <iostream>
-#include "deckOfCards.h"
-
 
 template<class T>
 struct node

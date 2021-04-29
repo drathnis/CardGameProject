@@ -474,8 +474,6 @@ CrazyEight::CrazyEight(int numPlayers){
 		players[i].createPlayer(handSize , numCards);
 	}
 		
-
-
 }
 
 CrazyEight::~CrazyEight(){

@@ -1,5 +1,5 @@
 /***********************************************************
-*Player.h
+*player.h
 *By: Julian Stanton
 *
 *
@@ -105,7 +105,7 @@ void Player::createPlayer(int handSize, int maxCards, int score){
 }
 
 Player::Player(){
-	cout << "Creating Player with default Values" << endl;
+
 	this->handSize = 7;
 	this->cardCount = 0;
 	this->maxCards = 52;

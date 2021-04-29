@@ -4,12 +4,26 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+
+#ifdef USE_SYMBOLS
+//typecast to char to display Suit cout<<char(DIOMONDS)
+enum symbols{
+	HEARTS =3, DIOMONDS, CLUBS, SPADES	
+};
+
+#else
+enum symbols{
+	HEARTS ='H', DIOMONDS ='D', CLUBS = 'C', SPADES='S'	
+};
+
+#endif
+
 struct card{
 	char suit;
 	char face;
 	card* next;
 };
-
 
 
 class deckOfCards
@@ -119,8 +133,22 @@ inline void deckOfCards::loadDeck()
 			for(c=13; c >= 1; c--) //create 13 cards per suit
 			{
 				temp = new card;
-				temp->suit = s;
-
+				
+				switch(s){
+					case 3:
+						temp->suit = HEARTS;
+						break;
+					case 4:
+						temp->suit = DIOMONDS;
+						break;
+					case 5:
+						temp->suit = CLUBS;
+						break;
+					case 6:
+						temp->suit = SPADES;
+						break;		
+				}
+					
 				switch (c)
 				{
 					case 1:  temp->face = 'A';
