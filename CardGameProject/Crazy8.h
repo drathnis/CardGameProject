@@ -13,11 +13,6 @@
 #include "deckOfCards.h"
 #include "player.h"
 
-//TODO
-//Test test
-//clean up;
-//remove some couts<<
-
 using namespace std;
 
 class CrazyEight{
@@ -27,8 +22,6 @@ public:
 
 	void playGame();
 	void simGame();
-
-
 
 private:
 	deckOfCards* deck;
@@ -51,7 +44,6 @@ private:
 	int getValidInput(int min, int max);
 	void mixBackIn();
 
-
 };
 
 void CrazyEight::sim(){
@@ -64,9 +56,7 @@ void CrazyEight::sim(){
 	int currPlayer = 0;
 	int currPlaycardCount;
 
-
 	string topCard;
-
 
 	do{
 		c8Deck.shuffleCards();
@@ -241,7 +231,6 @@ void CrazyEight::mixBackIn(){
 	}
 
 	c8Discard.addItem(save);
-
 
 }
 
