@@ -8,7 +8,7 @@
 *************************************************************/
 
 
-#define USE_SYMBOLS
+//#define USE_SYMBOLS
 
 #include "Crazy8.h"
 #include "War.h"
@@ -27,7 +27,6 @@ enum GameNames{
 	RANDOM_GAME,
 	EXIT,
 };
-
 
 int main(){
 	srand(static_cast<unsigned>(time(0)));
@@ -63,11 +62,11 @@ int main(){
 			    cout << "Crazy Eights selected "<< endl;
 				cout << "Select how many players will be playing?"
 					<< " or use 0 to run simulation mode\n>>";
-				userIn = getValidInput(0, 20);
+				userIn = getValidInput(0, 9);
 				sim = false;
 				if (userIn == 0){
 					cout << "How many players to sim?" << endl;
-					userIn = getValidInput(1, 20);
+					userIn = getValidInput(2, 9);
 					sim = true;
 				}
 				CrazyEight c8(userIn);
@@ -111,6 +110,7 @@ int main(){
 	} while (playing);
 	return 0;
 }
+
 
 
 int getValidInput(int min, int max){

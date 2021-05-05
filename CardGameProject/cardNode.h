@@ -10,9 +10,6 @@
 #ifndef CRAD_NODE_H
 #define CRAD_NODE_H
 
-
-
-
 struct cardNode{
 	char suit;
 	char face;
@@ -32,8 +29,6 @@ struct cardNode{
 		else
 			return false;
 	}
-
-
 
 };
 
